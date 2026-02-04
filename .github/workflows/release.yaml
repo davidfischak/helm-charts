@@ -27,14 +27,14 @@ jobs:
         id: sync
         run: |
           LOCAL_CHART="charts/enterprise-gateway"
-          UPSTREAM_REPO="https://www.github.com/jupyter-server/enterprise-gateway.git"
+          UPSTREAM_REPO="https://github.com/jupyter-server/enterprise-gateway.git"
           UPSTREAM_CHART="etc/kubernetes/helm/enterprise-gateway"
           TEMP_DIR="temp_upstream"
 
           #git config --global --unset-all http.https://github.com/.extraheader || true
 
           echo "Fetching upstream repository ..."
-          git clone --depth 1 --filter=blob:none --sparse $UPSTREAM_REPO $TEMP_DIR
+          git clone --depth 1 --filter=blob:none --sparse https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/jupyter-server/enterprise-gateway.git $TEMP_DIR
           cd $TEMP_DIR
           git sparse-checkout set --verbose $UPSTREAM_CHART
           cd ..
