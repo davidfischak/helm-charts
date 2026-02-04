@@ -27,16 +27,16 @@ jobs:
         id: sync
         run: |
           LOCAL_CHART="charts/enterprise-gateway"
-          UPSTREAM_REPO="https://github.com/jupyter-server/enterprise-gateway"
+          UPSTREAM_REPO="https://github.com/jupyter-server/enterprise_gateway"
           UPSTREAM_CHART="etc/kubernetes/helm/enterprise-gateway"
           TEMP_DIR="temp_upstream"
 
           #git config --global --unset-all http.https://github.com/.extraheader || true
 
           echo "Fetching upstream repository ..."
-          #git clone --depth 1 --filter=blob:none --sparse https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/jupyter-server/enterprise-gateway $TEMP_DIR
-          #git -c http.extraheader="AUTHORIZATION: Bearer ${{ secrets.GITHUB_TOKEN }}" clone --depth 1 --filter=blob:none --sparse https://github.com/jupyter-server/enterprise-gateway $TEMP_DIR
-          git clone --depth 1 --filter=blob:none --sparse https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/jupyter-server/enterprise-gateway $TEMP_DIR
+          #git clone --depth 1 --filter=blob:none --sparse https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/jupyter-server/enterprise_gateway $TEMP_DIR
+          #git -c http.extraheader="AUTHORIZATION: Bearer ${{ secrets.GITHUB_TOKEN }}" clone --depth 1 --filter=blob:none --sparse https://github.com/jupyter-server/enterprise_gateway $TEMP_DIR
+          git clone --depth 1 --filter=blob:none --sparse https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/jupyter-server/enterprise_gateway $TEMP_DIR
           cd $TEMP_DIR
           git sparse-checkout set --verbose $UPSTREAM_CHART
           cd ..
