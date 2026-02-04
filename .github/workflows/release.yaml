@@ -31,7 +31,7 @@ jobs:
           UPSTREAM_CHART="etc/kubernetes/helm/enterprise-gateway"
           TEMP_DIR="temp_upstream"
 
-          git config --global --unset-all http.https://github.com/.extraheader || true
+          #git config --global --unset-all http.https://github.com/.extraheader || true
 
           echo "Fetching upstream repository ..."
           git clone --depth 1 --filter=blob:none --sparse $UPSTREAM_REPO $TEMP_DIR
