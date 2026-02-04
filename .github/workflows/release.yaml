@@ -38,7 +38,7 @@ jobs:
           #git -c http.extraheader="AUTHORIZATION: Bearer ${{ secrets.GITHUB_TOKEN }}" clone --depth 1 --filter=blob:none --sparse https://github.com/jupyter-server/enterprise_gateway $TEMP_DIR
           git clone --depth 1 --filter=blob:none --sparse https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/jupyter-server/enterprise_gateway $TEMP_DIR
           cd $TEMP_DIR
-          git sparse-checkout set --verbose $UPSTREAM_CHART
+          git sparse-checkout set $UPSTREAM_CHART
           cd ..
 
           echo "Syncing files ..."
