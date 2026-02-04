@@ -1,4 +1,4 @@
-name: Release Charts
+name: Sync and Release Charts
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  release:
+  sync-and-release:
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -16,16 +16,48 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Git
         run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync with Upstream
+        id: sync
+        run: |
+          LOCAL_CHART="charts/enterprise-gateway"
+          UPSTREAM_REPO="https://github.com/jupyter-server/enterprise-gateway.git"
+          UPSTREAM_CHART="etc/kubernetes/helm/enterprise-gateway"
+          TEMP_DIR="temp_upstream"
+
+          echo "Fetching upstream repository ..."
+          git clone --verbose --depth 1 --filter=blob:none --sparse $UPSTREAM_REPO $TEMP_DIR
+          cd $TEMP_DIR
+          git sparse-checkout set --verbose $UPSTREAM_CHART
+          cd ..
+
+          echo "Syncing files ..."
+          rsync --archive --verbose --delete --exclude='.git' "$TEMP_DIR/$UPSTREAM_CHART/" "$LOCAL_CHART/"
+
+          if [[ -n $(git status --short "$LOCAL_CHART") ]]; then
+            echo "Changes detected from upstream."
+            git add --verbose "$LOCAL_CHART"
+            git commit --verbose --message="Auto-sync: Update chart from upstream"
+            git push --verbose origin main
+            echo "updated=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected. Local chart is up to date."
+            echo "updated=false" >> $GITHUB_OUTPUT
+          fi
+
+          rm --recursive --force $TEMP_DIR
 
       - name: Install Helm
         uses: azure/setup-helm@v4
 
       - name: Run chart-releaser
+        if: steps.sync.outputs.updated == 'true' || github.event_name != 'schedule'
         uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts
