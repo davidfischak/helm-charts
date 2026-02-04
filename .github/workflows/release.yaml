@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
 
       - name: Configure Git
         run: |
@@ -46,7 +46,7 @@ jobs:
             echo "Changes detected from upstream."
             git add --verbose "$LOCAL_CHART"
             git commit --verbose --message="Auto-sync: Update chart from upstream"
-            git push --verbose origin main
+            git push --verbose "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" main
             echo "updated=true" >> $GITHUB_OUTPUT
           else
             echo "No changes detected. Local chart is up to date."
