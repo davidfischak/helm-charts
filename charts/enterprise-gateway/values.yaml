@@ -35,7 +35,7 @@ service:
   ports:
     # The primary port on which Enterprise Gateway is servicing requests.
     - name: "http"
-      port: 9999
+      port: 8888
       targetPort: 8888
       # nodePort: 32652 # optional nodePort
     # The  port on which Enterprise Gateway will receive kernel connection info responses.
