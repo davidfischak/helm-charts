@@ -32,7 +32,7 @@ jobs:
           TEMP_DIR="temp_upstream"
 
           echo "Fetching upstream repository ..."
-          git -c http.https://github.com/.extraheader="" clone --depth 1 --filter=blob:none --sparse $UPSTREAM_REPO $TEMP_DIR
+          git clone --depth 1 --filter=blob:none --sparse $UPSTREAM_REPO $TEMP_DIR
           cd $TEMP_DIR
           git sparse-checkout set --verbose $UPSTREAM_CHART
           cd ..
