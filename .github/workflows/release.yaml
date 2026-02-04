@@ -34,7 +34,8 @@ jobs:
           #git config --global --unset-all http.https://github.com/.extraheader || true
 
           echo "Fetching upstream repository ..."
-          git clone --depth 1 --filter=blob:none --sparse https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/jupyter-server/enterprise-gateway.git $TEMP_DIR
+          #git clone --depth 1 --filter=blob:none --sparse https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/jupyter-server/enterprise-gateway.git $TEMP_DIR
+          git -c http.extraheader="AUTHORIZATION: Bearer ${{ secrets.GITHUB_TOKEN }}" clone --depth 1 --filter=blob:none --sparse https://github.com/jupyter-server/enterprise-gateway.git $TEMP_DIR
           cd $TEMP_DIR
           git sparse-checkout set --verbose $UPSTREAM_CHART
           cd ..
