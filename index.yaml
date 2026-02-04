@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  enterprise-gateway:
+  - apiVersion: v2
+    appVersion: 3.3.0.dev0
+    created: "2026-02-04T07:04:43.547758714Z"
+    description: A helm chart to deploy Jupyter Enterprise Gateway
+    digest: 1cbd14d1fb84dce91c7bf7f618d63a2a907bdd0c1c51531841b0dfb84ac96eb1
+    home: https://jupyter.org
+    icon: https://avatars1.githubusercontent.com/u/7388996?s=200&v=4
+    kubeVersion: '>=1.18.0-0'
+    name: enterprise-gateway
+    sources:
+    - https://github.com/jupyter-server/enterprise_gateway
+    type: application
+    urls:
+    - https://github.com/davidfischak/helm-charts/releases/download/enterprise-gateway-3.3.0-dev0/enterprise-gateway-3.3.0-dev0.tgz
+    version: 3.3.0-dev0
+generated: "2026-02-04T07:04:43.547763002Z"
